@@ -5,13 +5,9 @@ import (
 	"fmt"
 	"os"
 	"slices"
-	"github.com/jackc/pgx/v5"
+	// "github.com/jackc/pgx/v5"
 )
 
-var db_port uint64
-var db string
-
-var Config pgx.ConnConfig
 
 
 func init() {
@@ -22,14 +18,14 @@ func init() {
 		"--pass",
 		"--host",
 		"--db",
-	} 
+	}
 
-	flag.StringVar(&Config.Database, "name", "", "Database name")
-	flag.StringVar(&Config.User, "user", "root", "Database user")
-	flag.StringVar(&Config.Password, "password", "root", "Database password")
-	flag.StringVar(&Config.Host, "host", "localhost", "Database host")
-	flag.Uint64Var(&db_port, "port", 5432, "Database port")
-	flag.StringVar(&db, "db", "", "Database")
+	flag.StringVar(&Config.DBName, "name", "", "Database name")
+	flag.StringVar(&Config.DBUser, "user", "root", "Database user")
+	flag.StringVar(&Config.DBPass, "pass", "root", "Database password")
+	flag.StringVar(&Config.DBHost, "host", "localhost", "Database host")
+	flag.StringVar(&Config.DBPort, "port", "5432", "Database port")
+	flag.StringVar(&Config.Database, "db", "postgres", "Database")
 
 	for _, element := range required_arguments {
 		if !slices.Contains(os.Args, element) {
@@ -38,13 +34,14 @@ func init() {
 			os.Exit(1)
 		}
 	}
-
-	
-
-	Config.Port = uint16(db_port)
-
 	flag.Parse()
 }
+
+func main(){
+	Backup()
+}
+
+
 
 
 
